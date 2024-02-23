@@ -62,7 +62,7 @@ fi
 if [ $1 == "delete" ]
 then
     echo "Empty S3 bucket"
-    aws s3 rm s3://$s3_bucket --recursive
+    aws s3 rm s3://$S3_BUCKET --recursive
     echo "Bucket emptied successfully"
 
     echo "Deleting application stack..."
