@@ -1,11 +1,13 @@
-# CD12352 - Infrastructure as Code Project Solution
-# [YOUR NAME HERE]
+# Infrastructure as Code Project Solution
+
+# [Mihai Lambru]
 
 ## Spin up instructions
-TODO
+
+./run.sh deploy
 
 ## Tear down instructions
-TODO
+
+./run.sh delete
 
 ## Other considerations
-TODO (optional)

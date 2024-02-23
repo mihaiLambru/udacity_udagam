@@ -58,7 +58,18 @@ Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: udagram-s3-bucket-6522-4509-4333
+      BucketName: $S3_BUCKET
+
+  MyBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MyS3Bucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: !Sub "arn:aws:s3:::${MyS3Bucket}/*"
 
   WebAppInstanceRole:
     Type: AWS::IAM::Role
