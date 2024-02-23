@@ -63,7 +63,12 @@ if [ $1 == "delete" ]
 then
     echo "Empty S3 bucket"
     aws s3 rm s3://$S3_BUCKET --recursive
-    echo "Bucket emptied successfully"
+
+    if [ $? -eq 0 ]; then
+        echo "Bucket emptied successfully"
+    else
+        echo "Error: Failed to empty the bucket"
+    fi
 
     echo "Deleting application stack..."
     aws cloudformation delete-stack --stack-name $APPLICATION_STACK_NAME --region $REGION
@@ -78,10 +83,4 @@ then
     aws cloudformation wait stack-delete-complete --stack-name $NETWORK_STACK_NAME --region $REGION
 
     echo "Stack deletion completed successfully."
-
-    if [ $? -eq 0 ]; then
-        echo "Bucket emptied successfully"
-    else
-        echo "Error: Failed to empty the bucket"
-    fi
 fi
