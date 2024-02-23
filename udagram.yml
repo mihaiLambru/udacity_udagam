@@ -58,7 +58,7 @@ Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: $S3_BUCKET
+      BucketName: "${env:S3_BUCKET}"
 
   MyBucketPolicy:
     Type: AWS::S3::BucketPolicy

@@ -49,15 +49,18 @@ then
     echo "Waiting for application stack deployment to complete..."
     aws cloudformation wait stack-create-complete --stack-name $APPLICATION_STACK_NAME
 
-    echo "Stack deployment completed successfully."
-
-    echo "Movin index.html to s3 bucket"
-    aws s3 mv $source_file s3://$S3_BUCKET/$DESTINATION_KEY
     if [ $? -eq 0 ]; then
-        echo "File moved to S3 successfully"
-    else
-        echo "Error: File move to S3 failed"
+        echo "Stack deployment completed successfully."
+
+        echo "Movin index.html to s3 bucket"
+        aws s3 mv $source_file s3://$S3_BUCKET/$DESTINATION_KEY
+        if [ $? -eq 0 ]; then
+            echo "File moved to S3 successfully"
+        else
+            echo "Error: File move to S3 failed"
+        fi
     fi
+
 fi
 if [ $1 == "delete" ]
 then
