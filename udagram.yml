@@ -58,7 +58,7 @@ Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: "${env:S3_BUCKET}"
+      BucketName: udagram-s3-bucket-6522-4509-4333
 
   MyBucketPolicy:
     Type: AWS::S3::BucketPolicy
