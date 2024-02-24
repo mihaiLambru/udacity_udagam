@@ -56,7 +56,7 @@ then
         echo "Movin index.html to s3 bucket"
         aws s3 cp $SOURCE_FILE s3://$S3_BUCKET/$DESTINATION_KEY
         if [ $? -eq 0 ]; then
-            echo "File moved to S3 successfully"
+            echo "File copied to S3 successfully"
         else
             echo "Error: File move to S3 failed"
         fi
