@@ -79,12 +79,9 @@ Resources:
             #!/bin/bash
             sudo apt-get update -y
             sudo apt-get install nginx -y
-
             sudo apt-get install awscli -y
             cd /var/www/html
-            sudo rm -rf ./*
             sudo aws s3 cp s3://udagram-s3-bucket-736186268029/udagram/index.html ./index.html
-
             sudo service nginx start
         ImageId: ami-0c7217cdde317cfec
         SecurityGroupIds:

@@ -12,4 +12,4 @@
 
 ## Other considerations
 
-[My Load Balancer URL](http://udagra-udagr-vktvzf8kptrc-1722076668.us-east-1.elb.amazonaws.com/)
+[My Load Balancer URL](http://udagra-udagr-u7j4mo3eaj8d-1662630616.us-east-1.elb.amazonaws.com/)
