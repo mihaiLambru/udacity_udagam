@@ -3,7 +3,39 @@ Parameters:
     Description: An environment name that will be prefixed to resource names
     Type: String
 
+  HomeIPAddress:
+    Description: Your home IP address to allow SSH access to the bastion host
+    Type: String
+    Default: "0.0.0.0/0"
+
 Resources:
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH access from home IP to the bastion host
+      VpcId:
+        Fn::ImportValue: !Sub "${EnvironmentName}-VPCID"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref HomeIPAddress
+
+  BastionHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: udagram-key-pair
+      ImageId: ami-0c7217cdde317cfec
+      SubnetId:
+        Fn::ImportValue: !Sub "${EnvironmentName}-PUB1-SN"
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      IamInstanceProfile: !Ref WebAppInstanceProfile
+      Tags:
+        - Key: Name
+          Value: "Bastion Host"
+
   LBSecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -27,6 +59,10 @@ Resources:
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId: !Ref LBSecGroup
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !Ref BastionSecurityGroup
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 0
@@ -43,6 +79,12 @@ Resources:
             #!/bin/bash
             sudo apt-get update -y
             sudo apt-get install nginx -y
+
+            sudo apt-get install awscli -y
+            cd /var/www/html
+            sudo rm -rf ./*
+            sudo aws s3 cp s3://udagram-s3-bucket-736186268029/udagram/index.html ./index.html
+
             sudo service nginx start
         ImageId: ami-0c7217cdde317cfec
         SecurityGroupIds:
@@ -54,11 +96,12 @@ Resources:
               VolumeSize: "10"
         IamInstanceProfile:
           Name: !Ref WebAppInstanceProfile
+        KeyName: udagram-key-pair
 
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: udagram-s3-bucket-6522-4509-4333
+      BucketName: udagram-s3-bucket-736186268029
 
   WebAppInstanceRole:
     Type: AWS::IAM::Role
